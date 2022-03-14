@@ -10,29 +10,33 @@ import java.util.List;
 
 @Entity
 
-@Table(name = "user-profile")
+@Table(name = "user")
 
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 public class UserProfile {
+    @ToString.Exclude
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user-profile-gen")
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name = "uid")
-    @ToString.Exclude
-    private User user;
+    @Column
+    private String username;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @Column
+    private String password;
+
+    @ToString.Exclude
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(name = "user_booked_packages",
             joinColumns = @JoinColumn(name = "upid"),
             inverseJoinColumns = @JoinColumn(name = "vpid"))
     private List<VacationPackage> packages;
 
-    public UserProfile(User user) {
-        this.user = user;
+    public UserProfile(String username, String password) {
+        this.username = username;
+        this.password = password;
     }
 }

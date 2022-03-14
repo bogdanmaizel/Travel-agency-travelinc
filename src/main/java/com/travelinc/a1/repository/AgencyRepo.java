@@ -46,15 +46,6 @@ public class AgencyRepo {
         return destinations;
     }
 
-    public Integer computeBookedPeople(VacationPackage vp) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        return em.createQuery(
-                "SELECT COUNT(up) from UserProfile up JOIN VacationPackage vpk ON vpk.id = up.id WHERE vpk.id = :vpid")
-                .setParameter("vpid",vp.getId())
-                .getFirstResult();
-    }
-
     public void createPackage(String name, Destination destination, Date start, Date end, Integer price, Integer stock, String description) {
         VacationPackage vp = new VacationPackage(name, destination, start, end, price, stock, description);
         EntityManager em = emf.createEntityManager();
@@ -82,6 +73,10 @@ public class AgencyRepo {
         em.close();
     }
 
+    public Integer getBookedPeople(VacationPackage vp) {
+        return vp.getUserProfiles().size();
+    }
+
     public void editPackage(Long id, String name, Destination destination, Date start, Date end, Integer price, Integer stock, String description) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -94,7 +89,6 @@ public class AgencyRepo {
         toEdit.setEnd(end);
         toEdit.setPrice(price);
         toEdit.setStock(stock);
-
         em.getTransaction().commit();
         em.close();
     }

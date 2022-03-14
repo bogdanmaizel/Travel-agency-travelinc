@@ -83,5 +83,15 @@ public class AgencyService {
         }
     }
 
+    public Integer getBookedPeople(VacationPackage vp) {
+        int num = 0;
+        try {
+            num = vp.getUserProfiles().size();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return num;
+    }
 
 }

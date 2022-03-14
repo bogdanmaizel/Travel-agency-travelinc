@@ -41,10 +41,6 @@ public class VacationPackage {
     @ManyToMany(mappedBy = "packages")
     private List<UserProfile> userProfiles;
 
-    public String DestinationToString() {
-        return destination.getName();
-    }
-
     public VacationPackage(String name, Destination destination, Date start, Date end, Integer price, Integer stock, String description) {
         this.name = name;
         this.destination = destination;
