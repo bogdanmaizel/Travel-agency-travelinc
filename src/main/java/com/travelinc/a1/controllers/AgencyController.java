@@ -4,19 +4,16 @@ package com.travelinc.a1.controllers;
 import com.travelinc.a1.model.Destination;
 import com.travelinc.a1.model.VacationPackage;
 import com.travelinc.a1.service.AgencyService;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
 
 import java.io.IOException;
 import java.sql.Date;
 
 public class AgencyController {
-    AgencyService as;
+    private final AgencyService as;
     //for new
     @FXML
     private TextField vpNewName;
@@ -108,8 +105,6 @@ public class AgencyController {
                 Integer.valueOf(vpNewStock.getText()),
                 vpNewDesc.getText());
     }
-
-
 
     @FXML
     protected void displayAllPackages() { // PACKAGE READ / CRUD

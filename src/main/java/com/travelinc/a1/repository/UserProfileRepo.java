@@ -6,37 +6,45 @@ import com.travelinc.a1.model.VacationPackage;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.Query;
-import java.util.List;
 
 public class UserProfileRepo {
     private static final EntityManagerFactory emf =
             Persistence.createEntityManagerFactory("ro.tutorial.lab.SD");
 
     public void createUser(String username, String password) {
-        UserProfile userProfile = new UserProfile(username, password);
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
+
+        UserProfile userProfile = new UserProfile(username, password);
         em.persist(userProfile);
+
         em.getTransaction().commit();
         em.close();
     }
 
-    public List findByName(String username) {
-        EntityManager em = emf.createEntityManager();
-        Query searchByName = em.createQuery(
-                "SELECT UP from UserProfile UP WHERE UP.username LIKE :search", UserProfile.class
-        );
-        return searchByName.getResultList();
-    }
-
-    public void updateUserProfile(Long id, String username, String password) {
+    public String getUserPassword(String username) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
 
-        UserProfile up = em.find(UserProfile.class, id);
-        up.setUsername(username);
+        UserProfile res = em
+                .createQuery("SELECT up from UserProfile up WHERE up.username = :uname", UserProfile.class)
+                .setParameter("uname", username)
+                .getSingleResult();
+
+        em.close();
+        return res.getPassword();
+    }
+
+    public void updatePassword(String username, String password) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        UserProfile up = em
+                .createQuery("SELECT up from UserProfile up WHERE up.username = :uname", UserProfile.class)
+                .setParameter("uname", username)
+                .getSingleResult();
         up.setPassword(password);
+
         em.merge(up);
         em.getTransaction().commit();
         em.close();
@@ -45,12 +53,13 @@ public class UserProfileRepo {
     public void deleteUserProfile(Long id) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        em.remove(em.find(UserProfile.class, id));
+        UserProfile up = em.find(UserProfile.class, id);
+        em.remove(up);
         em.getTransaction().commit();
         em.close();
     }
 
-    public void bookVacation(Long uid, Long vid) {
+    public void bookVacation(String uid, Long vid) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
         VacationPackage vp = em.find(VacationPackage.class, vid);
@@ -61,7 +70,5 @@ public class UserProfileRepo {
         em.merge(vp);
         em.getTransaction().commit();
         em.close();
-
     }
-
 }

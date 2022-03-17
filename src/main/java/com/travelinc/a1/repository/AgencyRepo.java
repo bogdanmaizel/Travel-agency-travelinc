@@ -30,14 +30,6 @@ public class AgencyRepo {
         em.close();
     }
 
-    public void deleteDestination(Destination d) {
-        EntityManager em = emf.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(d);
-        em.getTransaction().commit();
-        em.close();
-    }
-
     public List<Destination> getAllDestinations() {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();

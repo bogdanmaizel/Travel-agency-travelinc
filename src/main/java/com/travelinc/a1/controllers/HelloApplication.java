@@ -13,14 +13,19 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("hello-view"), 1105, 748);
-        stage.setTitle("Main menu");
+        scene = new Scene(loadFXML("hello-view"));
+        stage.setTitle("Travelinc.");
         stage.setScene(scene);
         stage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+    }
+
+    static void resize(int w, int h) {
+        Scene resizedScene = new Scene(scene.getRoot(), w, h);
+        scene = resizedScene;
     }
 
     private static Parent loadFXML(String fxml) throws IOException {

@@ -17,15 +17,12 @@ import java.util.List;
 @Setter
 @ToString
 public class UserProfile {
-    @ToString.Exclude
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY, generator = "user-profile-gen")
-    private Long id;
-
-    @Column
+    @Column(unique = true)
     private String username;
 
-    @Column
+    @ToString.Exclude
+    @Column(nullable = false)
     private String password;
 
     @ToString.Exclude

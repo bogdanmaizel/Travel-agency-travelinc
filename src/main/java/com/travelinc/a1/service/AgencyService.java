@@ -10,7 +10,7 @@ import java.sql.Date;
 import java.util.List;
 
 public class AgencyService {
-    AgencyRepo agencyRepo;
+    private AgencyRepo agencyRepo;
 
     public AgencyService() {
         this.agencyRepo = new AgencyRepo();
