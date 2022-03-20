@@ -11,6 +11,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.sql.Date;
+import java.util.stream.Collectors;
 
 public class AgencyController {
     private final AgencyService as;

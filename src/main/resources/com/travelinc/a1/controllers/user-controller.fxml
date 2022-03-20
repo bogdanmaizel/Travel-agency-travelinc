@@ -33,16 +33,19 @@
 -->
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <VBox prefHeight="748.0" prefWidth="1105.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.travelinc.a1.controllers.UserController">
   <children>
-    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" onMouseEntered="#setUsername" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
             <TableView fx:id="vpTable" layoutX="422.0" layoutY="40.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="640.0" prefWidth="628.0" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
                <columns>
@@ -56,12 +59,36 @@
                   <TableColumn fx:id="vpStatusCol" prefWidth="75.0" text="Status (WIP)" />
                </columns>
             </TableView>
-        <Label alignment="CENTER" layoutX="14.0" layoutY="14.0" style="&#10;" text="Hello, user!" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+        <Label fx:id="welcomeMessage" alignment="CENTER" layoutX="16.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" style="&#10;" text="Hello!" textAlignment="CENTER" wrapText="false" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="15.0">
           <font>
             <Font name="System Bold" size="35.0" />
           </font>
         </Label>
-            <Button layoutX="14.0" layoutY="709.0" mnemonicParsing="false" onAction="#backToLogin" text="Log out" />
+            <Button layoutX="14.0" layoutY="689.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="45.0" prefWidth="83.0" text="Log out">
+               <font>
+                  <Font size="15.0" />
+               </font></Button>
+            <Button layoutX="14.0" layoutY="65.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#displayAllPackages" prefHeight="25.0" prefWidth="420.0" text="Display available packages" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="65.0">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Button>
+            <Button layoutX="15.0" layoutY="623.0" mnemonicParsing="false" onAction="#bookVacation" prefHeight="35.0" prefWidth="420.0" text="Book now!">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Button>
+            <ComboBox fx:id="destinationFilter" layoutX="14.0" layoutY="183.0" onMouseClicked="#refreshDestinations" prefHeight="25.0" prefWidth="149.0" promptText="Destination filter" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="190.0" />
+            <Label layoutX="16.0" layoutY="132.0" text="Filters" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="135.0">
+               <font>
+                  <Font name="System Bold" size="35.0" />
+               </font>
+            </Label>
+            <TextField fx:id="minPriceFilter" layoutX="14.0" layoutY="214.0" promptText="Min price" AnchorPane.topAnchor="220.0" />
+            <TextField fx:id="maxPriceFilter" layoutX="14.0" layoutY="245.0" promptText="Max price" AnchorPane.topAnchor="250.0" />
+            <DatePicker fx:id="dateFilter" layoutX="15.0" layoutY="283.0" promptText="After date (WIP).." />
+            <Button layoutX="15.0" layoutY="315.0" mnemonicParsing="false" onAction="#displayFilteredPackages" prefHeight="25.0" prefWidth="174.0" text="Apply filters" />
+            <Button layoutX="15.0" layoutY="349.0" mnemonicParsing="false" onAction="#displayBookedPackages" prefHeight="25.0" prefWidth="174.0" text="Display booked packages" />
       </children>
     </AnchorPane>
   </children>

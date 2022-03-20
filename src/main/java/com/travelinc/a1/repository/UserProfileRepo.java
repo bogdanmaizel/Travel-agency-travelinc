@@ -1,11 +1,14 @@
 package com.travelinc.a1.repository;
 
+import com.travelinc.a1.model.Destination;
 import com.travelinc.a1.model.UserProfile;
 import com.travelinc.a1.model.VacationPackage;
+import com.travelinc.a1.service.UserService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class UserProfileRepo {
     private static final EntityManagerFactory emf =
@@ -59,6 +62,18 @@ public class UserProfileRepo {
         em.close();
     }
 
+    public List<VacationPackage> getAvblPackages() {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        List<VacationPackage> allVP =
+                em.createQuery("SELECT vp FROM VacationPackage vp WHERE vp.stock > vp.userProfiles.size", VacationPackage.class)
+                        .getResultList();
+
+        em.close();
+        return allVP;
+    }
+
     public void bookVacation(String uid, Long vid) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
@@ -71,4 +86,26 @@ public class UserProfileRepo {
         em.getTransaction().commit();
         em.close();
     }
+
+    public List<Destination> getAllDestinations() {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+        List<Destination> destinations = em.createQuery("SELECT d from Destination d", Destination.class).getResultList();
+        em.close();
+        return destinations;
+    }
+
+    public UserProfile findUser(String username) {
+        EntityManager em = emf.createEntityManager();
+        em.getTransaction().begin();
+
+        UserProfile up = em
+                .createQuery("select up from UserProfile up where up.username = :u", UserProfile.class)
+                .setParameter("u", username)
+                .getSingleResult();
+
+        em.close();
+        return up;
+    }
+
 }

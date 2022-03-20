@@ -1,8 +1,15 @@
 package com.travelinc.a1.service;
 
+import com.travelinc.a1.model.Destination;
 import com.travelinc.a1.model.UserProfile;
 import com.travelinc.a1.model.VacationPackage;
 import com.travelinc.a1.repository.UserProfileRepo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserService {
 
@@ -18,6 +25,16 @@ public class UserService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public UserProfile findUser(String username) {
+        UserProfile found = null;
+        try {
+            found = userProfileRepo.findUser(username);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return found;
     }
 
     public void changePassword(String username, String password) {
@@ -36,6 +53,44 @@ public class UserService {
         }
     }
 
+    public ObservableList<VacationPackage> displayPackages() { //DESTINATION READ
+        List<VacationPackage> allDestinations;
+        ObservableList<VacationPackage> displayVP = null;
+        try {
+            allDestinations = userProfileRepo.getAvblPackages();
+            displayVP = FXCollections.observableArrayList(allDestinations);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return displayVP;
+    }
+
+    public ObservableList<VacationPackage> displayBookedPackages(UserProfile up) {
+        ObservableList<VacationPackage> allPacks = null;
+        try {
+            allPacks = FXCollections.observableArrayList(up.getPackages());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return allPacks;
+    }
+
+    public ObservableList<VacationPackage> displayFilteredPackages(Destination destination, Integer minPrice, Integer maxPrice) {
+        List<VacationPackage> allDestinations;
+        ObservableList<VacationPackage> displayVP = null;
+        try {
+            allDestinations = userProfileRepo.getAvblPackages()
+                    .stream()
+                    .filter(t -> t.getDestination().equals(destination))
+                    .filter(t -> t.getPrice() >= minPrice && t.getPrice() <= maxPrice)
+                    .collect(Collectors.toList());
+            displayVP = FXCollections.observableArrayList(allDestinations);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return displayVP;
+    }
+
     public boolean checkLogin(String username, String password) {
         boolean ok = false;
         try {
@@ -45,5 +100,17 @@ public class UserService {
             e.printStackTrace();
         }
         return ok;
+    }
+
+    public ObservableList<Destination> getAllDestinations() {
+        List<Destination> destinations;
+        ObservableList<Destination> destinationsFilter = null;
+        try {
+            destinations = userProfileRepo.getAllDestinations();
+            destinationsFilter = FXCollections.observableArrayList(destinations);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return destinationsFilter;
     }
 }

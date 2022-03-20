@@ -1,5 +1,6 @@
 package com.travelinc.a1.controllers;
 
+import com.travelinc.a1.model.UserProfile;
 import com.travelinc.a1.service.UserService;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -22,7 +23,7 @@ public class LoginController {
     @FXML
     private PasswordField passwordResetField;
 
-    protected static String loggedUsername;
+    static UserProfile loggedUser;
 
     public LoginController() {
         this.userService = new UserService();
@@ -48,6 +49,7 @@ public class LoginController {
         String username = usernameField.getText();
         String password = passwordField.getText();
         if (userService.checkLogin(username, password)) {
+            loggedUser = userService.findUser(username);
             HelloApplication.setRoot("user-controller");
         } else {
             loginStatus.setTextFill(Color.RED);
